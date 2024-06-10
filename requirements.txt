@@ -1,0 +1,24 @@
+# Core dependencies
+langchain==0.1.15
+langchain_openai==0.1.1
+openai==1.16.2
+python-dotenv==1.0.1
+pydantic-settings==2.0.3
+
+# Scraping and Automation
+googlesearch-python==1.2.3
+selenium==4.19.0
+webdriver-manager==4.0.1
+
+# Data handling and processing
+numpy>=1.23.5
+pandas==1.5.1
+
+# Streamlit for the interface
+streamlit>=1.20.0
+
+# Additional tools
+tweepy==4.14.0
+
+# Optional dependencies
+langchainhub
