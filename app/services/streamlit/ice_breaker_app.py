@@ -2,6 +2,7 @@ import streamlit as st
 from services.langchain.ice_breaker import IceBreaker
 import json
 from streamlit_lottie import st_lottie
+import time
 
 class IceBreakerApp:
     def __init__(self):
@@ -61,7 +62,18 @@ class IceBreakerApp:
         button_clicked = st.button('Search Info')
         if button_clicked:
             if name and company:
-                st.write("Working in the solution...")
+                progress_bar = st.progress(0)
+                
+                progress_bar.progress(3)
+                summary_and_facts, topic_of_interest, ice_breakers = st.session_state.ice_breaker.generate_ice_breakers(name, company, progress_bar)
+                
+                progress_bar.progress(100)
+                st.write("summary_and_facts")
+                st.json(summary_and_facts)
+                st.write("topic_of_interest")
+                st.json(topic_of_interest)
+                st.write("ice_breakers")
+                st.json(ice_breakers)
             else:
                 st.warning("Please fill in both fields to receive suggestions.")
 

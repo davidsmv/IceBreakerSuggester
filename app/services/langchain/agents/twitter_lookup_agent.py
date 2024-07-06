@@ -9,7 +9,7 @@ from langchain_core.tools import Tool
 from langchain_openai import ChatOpenAI
 from langchain.prompts.prompt import PromptTemplate
 from dotenv import load_dotenv
-from services.langchain.tools.tools import get_profile_url
+from services.langchain.tools.profile_url_fetcher import ProfileUrlFetcher
 
 
 
@@ -24,13 +24,14 @@ class TwitterLookAgent:
     def __init__(self, llm) -> None:
         self.llm = llm
         self.react_prompt = hub.pull("hwchase17/react")
+        self.profile_url_fetcher = ProfileUrlFetcher()
         
 
     def lookup(self, name:str, company: str) -> str:
         tools_for_agent = [
             Tool(
                 name="Crawl Google 4 Twitter profile page",
-                func=get_profile_url,
+                func=self.profile_url_fetcher.get_profile_url,
                 description="useful for when you need get the Twitter Page URL", # Mandatory
                 )
             ]

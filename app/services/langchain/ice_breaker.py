@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv, find_dotenv
+import streamlit as st
 
 from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
@@ -25,24 +26,30 @@ class IceBreaker:
         self.twitter_agent = TwitterLookAgent(llm=self.llm)
         self.chain_factory = ChainFactory(self.llm)
 
-    def get_social_media_data(self, name: str, company: str):
+    def get_social_media_data(self, name: str, company: str, progress_bar):
         """Fetches LinkedIn and Twitter data for a given person."""
         linkedin_profile_url = self.linkedin_agent.lookup(name, company)
+        progress_bar.progress(5)
         linkedin_data = self.linkedin_scraper.linkedin_profile(linkedin_profile_url)
+        progress_bar.progress(10)
 
         twitter_username = self.twitter_agent.lookup(name, company)
+        progress_bar.progress(15)
         twitter_data = self.twitter_scraper.fetch_tweets(twitter_username)
+        progress_bar.progress(20)
 
         return linkedin_data, twitter_data
 
 
-    def generate_ice_breakers(self, name: str, company: str):
+    def generate_ice_breakers(self, name: str, company: str, progress_bar):
         """Generates ice breakers, topics of interest, and summaries for a given person."""
-        linkedin_data, twitter_data = self.get_social_media_data(name, company)
-
+        linkedin_data, twitter_data = self.get_social_media_data(name, company, progress_bar)
+        progress_bar.progress(25)
 
         summary_and_facts = self.chain_factory.get_prompt_dict(summary_template, summary_parser, linkedin_data, twitter_data)
+        progress_bar.progress(50)
         topic_of_interest = self.chain_factory.get_prompt_dict(topics_template, topic_of_interest_parser, linkedin_data, twitter_data)
+        progress_bar.progress(75)
         ice_breakers = self.chain_factory.get_prompt_dict(ice_breakers_template, ice_breaker_parser, linkedin_data, twitter_data)
 
         return summary_and_facts, topic_of_interest, ice_breakers
