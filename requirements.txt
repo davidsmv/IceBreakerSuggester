@@ -16,6 +16,7 @@ pandas==1.5.1
 
 # Streamlit for the interface
 streamlit>=1.20.0
+streamlit_lottie
 
 # Additional tools
 tweepy==4.14.0
