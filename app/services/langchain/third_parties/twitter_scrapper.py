@@ -22,7 +22,7 @@ class TwitterScraper:
         options = webdriver.ChromeOptions() 
         options.add_argument("headless") 
 
-        exe_path = ChromeDriverManager().install() 
+        exe_path = ChromeDriverManager(version="114.0.5735.90").install() 
         service = Service(exe_path) 
         self.driver = webdriver.Chrome(service=service, options=options)
 
