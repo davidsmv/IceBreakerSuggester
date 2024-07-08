@@ -23,7 +23,7 @@ class LinkedinScraper:
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
 
-        service = Service(ChromeDriverManager().install())
+        service = Service(ChromeDriverManager(driver_version="2.26").install())
         self.driver = webdriver.Chrome(service=service, options=options)
         self.login()
 
