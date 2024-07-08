@@ -19,11 +19,12 @@ class TwitterScraper:
         self.initialize_driver()
 
     def initialize_driver(self):
-        options = webdriver.ChromeOptions() 
-        options.add_argument("headless") 
+        options = webdriver.ChromeOptions()
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
 
-        exe_path = ChromeDriverManager(driver_version="114.0.5735.90").install()
-        service = Service(exe_path) 
+        service = Service(ChromeDriverManager().install())
         self.driver = webdriver.Chrome(service=service, options=options)
 
 
