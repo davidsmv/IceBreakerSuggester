@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import WebDriverException
 from dotenv import load_dotenv, find_dotenv
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import os
 from configurations.settings import settings
 
@@ -22,6 +23,9 @@ class LinkedinScraper:
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
+
+         # Define only necessary capabilities
+        options.set_capability('browserName', 'chrome')
 
         print("Installing ChromeDriver...")
         service = Service(ChromeDriverManager().install())
