@@ -25,9 +25,11 @@ class TwitterScraper:
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
 
-        service = Service(ChromeDriverManager(driver_version="2.26").install())
+        print("Installing ChromeDriver...")
+        service = Service(ChromeDriverManager().install())
+        print("Starting ChromeDriver...")
         self.driver = webdriver.Chrome(service=service, options=options)
-
+        print("ChromeDriver started successfully.")
 
     def fetch_tweets(self, username):
         query = f"latest tweets from {username} site:twitter.com"
