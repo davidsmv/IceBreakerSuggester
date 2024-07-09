@@ -29,7 +29,7 @@ class TwitterScraper:
         options.set_capability('browserName', 'chrome')
 
         print("Installing ChromeDriver...")
-        service = Service(ChromeDriverManager().install())
+        service = Service(ChromeDriverManager(driver_version="2.26").install())
         print("Starting ChromeDriver...")
         self.driver = webdriver.Chrome(service=service, options=options)
         print("ChromeDriver started successfully.")
