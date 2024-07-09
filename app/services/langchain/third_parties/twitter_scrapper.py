@@ -25,6 +25,9 @@ class TwitterScraper:
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
 
+         # Define only necessary capabilities
+        options.set_capability('browserName', 'chrome')
+
         print("Installing ChromeDriver...")
         service = Service(ChromeDriverManager().install())
         print("Starting ChromeDriver...")
