@@ -6,6 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import WebDriverException
+from webdriver_manager.core.os_manager import ChromeType
+from selenium.webdriver.chrome.options import Options
 
 
 class ProfileUrlFetcher:
@@ -16,16 +18,11 @@ class ProfileUrlFetcher:
 
     def initialize_driver(self):
         options = webdriver.ChromeOptions()
-        options.add_argument("--headless")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--disable-gpu")
-
-         # Define only necessary capabilities
-        options.set_capability('browserName', 'chrome')
-
+        options.add_argument('--headless')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--window-size=1920,1200')
         print("Installing ChromeDriver...")
-        service = Service(ChromeDriverManager(driver_version="2.26").install())
+        service = Service(ChromeDriverManager().install())
         print("Starting ChromeDriver...")
         self.driver = webdriver.Chrome(service=service, options=options)
         print("ChromeDriver started successfully.")
