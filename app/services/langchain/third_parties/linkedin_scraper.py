@@ -19,6 +19,7 @@ class LinkedinScraper:
         self.initialize_driver()
 
     def initialize_driver(self):
+        self.driver = None
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
         options.add_argument('--disable-gpu')
@@ -56,7 +57,6 @@ class LinkedinScraper:
         try:
             self.driver.get(linkedin_profile_url)
         except:
-            self.driver = None
             self.initialize_driver()
             self.driver.get(linkedin_profile_url)
 

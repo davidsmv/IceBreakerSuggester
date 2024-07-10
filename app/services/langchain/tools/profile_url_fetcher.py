@@ -17,6 +17,7 @@ class ProfileUrlFetcher:
         self.initialize_driver()
 
     def initialize_driver(self):
+        self.driver = None
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
         options.add_argument('--disable-gpu')
@@ -38,7 +39,11 @@ class ProfileUrlFetcher:
             str: URL
         """
         try:
-            self.driver.get('https://www.google.com')
+            try:
+                self.driver.get('https://www.google.com')
+            except:
+                self.initialize_driver()
+                self.driver.get('https://www.google.com')
             search_box = self.driver.find_element(By.NAME, 'q')
             search_box.send_keys(text)
             search_box.send_keys(Keys.RETURN)
