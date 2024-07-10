@@ -56,6 +56,7 @@ class LinkedinScraper:
         try:
             self.driver.get(linkedin_profile_url)
         except:
+            self.driver = None
             self.initialize_driver()
             self.driver.get(linkedin_profile_url)
 
