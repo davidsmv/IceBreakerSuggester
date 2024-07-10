@@ -53,8 +53,13 @@ class LinkedinScraper:
         if not self.is_driver_active:
             self.initialize_driver()
 
-        self.driver.get(linkedin_profile_url) 
-        sleep(1)
+        try:
+            self.driver.get(linkedin_profile_url)
+        except:
+            self.initialize_driver()
+            self.driver.get(linkedin_profile_url)
+
+        sleep(0.5)
 
         elements = [
             {"name": "name", "xpath": "//h1[@class='text-heading-xlarge inline t-24 v-align-middle break-words']", "default": "Name not found"},
