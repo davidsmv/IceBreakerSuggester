@@ -17,8 +17,7 @@ class TwitterScraper:
     
     def __init__(self):
         """Initializes the TwitterScraper with credentials and sets up API access."""
-        self.driver = None 
-        self.initialize_driver()
+        self.driver = None
 
     def initialize_driver(self):
         self.driver = None
@@ -36,12 +35,8 @@ class TwitterScraper:
         query = f"latest tweets from {username} site:twitter.com"
 
         try:
-            # Perform the search on Google
-            try:
-                self.driver.get('https://www.google.com')
-            except:
-                self.initialize_driver()
-                self.driver.get('https://www.google.com')
+            self.initialize_driver()
+            self.driver.get('https://www.google.com')
             search_box = self.driver.find_element(By.NAME, 'q')
             search_box.send_keys(query)
             search_box.send_keys(Keys.RETURN)

@@ -13,8 +13,7 @@ from selenium.webdriver.chrome.options import Options
 class ProfileUrlFetcher:
     def __init__(self):
         """Initializes the TwitterScraper with credentials and sets up API access."""
-        self.driver = None 
-        self.initialize_driver()
+        self.driver = None
 
     def initialize_driver(self):
         self.driver = None
@@ -39,11 +38,8 @@ class ProfileUrlFetcher:
             str: URL
         """
         try:
-            try:
-                self.driver.get('https://www.google.com')
-            except:
-                self.initialize_driver()
-                self.driver.get('https://www.google.com')
+            self.initialize_driver()
+            self.driver.get('https://www.google.com')
             search_box = self.driver.find_element(By.NAME, 'q')
             search_box.send_keys(text)
             search_box.send_keys(Keys.RETURN)
@@ -59,4 +55,7 @@ class ProfileUrlFetcher:
 
         except Exception as e:
             return f"An error occurred: {e}"
+        
+        finally:
+             self.driver.quit()
 
