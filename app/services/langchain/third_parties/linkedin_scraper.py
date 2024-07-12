@@ -16,7 +16,7 @@ class LinkedinScraper:
         self.linkedin_username = settings.LINKEDIN_USERNAME
         self.linkedin_password = settings.LINKEDIN_PASSWORD
         self.driver = None 
-        self.initialize_driver()
+        # self.initialize_driver()
 
     def initialize_driver(self):
         self.driver = None
@@ -51,14 +51,8 @@ class LinkedinScraper:
             return False
 
     def linkedin_profile(self, linkedin_profile_url: str):
-        if not self.is_driver_active:
-            self.initialize_driver()
-
-        try:
-            self.driver.get(linkedin_profile_url)
-        except:
-            self.initialize_driver()
-            self.driver.get(linkedin_profile_url)
+        self.initialize_driver()
+        self.driver.get(linkedin_profile_url)
 
         sleep(0.5)
 
@@ -86,5 +80,9 @@ class LinkedinScraper:
             f"About: {profile_info['about']}\n"
             f"Company: {profile_info['company']}\n"
         )
+        self.driver.quit()
+
         return message
+
+
         
