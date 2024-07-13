@@ -58,4 +58,8 @@ class TwitterScraper:
 
         except Exception as e:
             return f"An error occurred: {e}"
+        
+        finally:
+            if self.driver is not None: self.driver.quit()
+            self.driver = None
 

@@ -57,5 +57,6 @@ class ProfileUrlFetcher:
             return f"An error occurred: {e}"
         
         finally:
-             self.driver.quit()
+            if self.driver is not None: self.driver.quit()
+            self.driver = None
 
