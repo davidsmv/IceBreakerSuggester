@@ -29,6 +29,7 @@ class LinkedinScraper:
         print("Starting ChromeDriver...")
         self.driver = webdriver.Chrome(service=service, options=options)
         print("ChromeDriver started successfully.")
+        sleep(1) 
         self.login()
 
     def login(self):
@@ -38,9 +39,9 @@ class LinkedinScraper:
 
         self.driver.find_element(By.XPATH, '//*[@id="username"]').send_keys(self.linkedin_username) 
         self.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys(self.linkedin_password) 
-        sleep(0.1) 
+        sleep(2) 
         self.driver.find_element(By.XPATH, '//*[@id="organic-div"]/form/div[3]/button').click()
-        sleep(0.1) 
+        sleep(0.5) 
 
     def is_driver_active(self):
         try:
@@ -54,7 +55,7 @@ class LinkedinScraper:
         self.initialize_driver()
         self.driver.get(linkedin_profile_url)
 
-        sleep(0.5)
+        sleep(5)
 
         elements = [
             {"name": "name", "xpath": "//h1[@class='text-heading-xlarge inline t-24 v-align-middle break-words']", "default": "Name not found"},
@@ -71,6 +72,7 @@ class LinkedinScraper:
                 profile_info[element["name"]] = element_text
             except:
                 profile_info[element["name"]] = element["default"]
+        
 
         # Compile the message
         message = (
@@ -80,7 +82,9 @@ class LinkedinScraper:
             f"About: {profile_info['about']}\n"
             f"Company: {profile_info['company']}\n"
         )
+
         self.driver.quit()
+        self.driver = None
 
         return message
 
