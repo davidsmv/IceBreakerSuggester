@@ -21,7 +21,7 @@ class LinkedinScraper:
     def initialize_driver(self):
         self.driver = None
         options = webdriver.ChromeOptions()
-        # options.add_argument('--headless')
+        options.add_argument('--headless')
         options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1920,1200')
         print("Installing ChromeDriver...")
@@ -41,7 +41,7 @@ class LinkedinScraper:
         self.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys(self.linkedin_password) 
         sleep(2) 
         self.driver.find_element(By.XPATH, '//*[@id="organic-div"]/form/div[3]/button').click()
-        sleep(5)
+        sleep(1)
 
     def is_driver_active(self):
         try:
