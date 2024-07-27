@@ -43,11 +43,10 @@ class TwitterScraper:
             time.sleep(2)  # Allow some time for the search results to load
 
             # Extract the descriptions from the search results
-            results = self.driver.find_elements(By.CSS_SELECTOR, 'div.yuRUbf a')
+            results = self.driver.find_elements(By.CSS_SELECTOR, 'div.VwiC3b')
             descriptions = []
-            for result in results[:5]:
-                link = result.get_attribute('href')
-                descriptions.append(link)
+            for result in results[:5]:  # Limiting to the first 5 results
+                descriptions.append(result.text)
 
             # Join all descriptions into a single string message
             full_description = " | ".join(descriptions)  # Use a delimiter like " | " to separate each description

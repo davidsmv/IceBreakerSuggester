@@ -41,7 +41,7 @@ class LinkedinScraper:
         self.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys(self.linkedin_password) 
         sleep(2) 
         self.driver.find_element(By.XPATH, '//*[@id="organic-div"]/form/div[3]/button').click()
-        sleep(0.5) 
+        sleep(1)
 
     def is_driver_active(self):
         try:
