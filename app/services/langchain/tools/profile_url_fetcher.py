@@ -8,6 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import WebDriverException
 from webdriver_manager.core.os_manager import ChromeType
 from selenium.webdriver.chrome.options import Options
+import os
 
 
 class ProfileUrlFetcher:
@@ -22,7 +23,11 @@ class ProfileUrlFetcher:
         options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1920,1200')
         print("Installing ChromeDriver...")
-        service = Service(ChromeDriverManager().install())
+        # service = Service(ChromeDriverManager().install())
+        chrome_install = ChromeDriverManager().install()
+        folder = os.path.dirname(chrome_install)
+        chromedriver_path = os.path.join(folder, "chromedriver.exe")
+        service = Service(chromedriver_path)
         print("Starting ChromeDriver...")
         self.driver = webdriver.Chrome(service=service, options=options)
         print("ChromeDriver started successfully.")
