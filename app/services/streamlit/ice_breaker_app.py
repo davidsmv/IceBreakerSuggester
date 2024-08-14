@@ -3,6 +3,7 @@ from services.langchain.ice_breaker import IceBreaker
 import json
 from streamlit_lottie import st_lottie
 import time
+import re
 
 class IceBreakerApp:
     def __init__(self):
@@ -43,19 +44,57 @@ class IceBreakerApp:
             The purpose of this project is to provide icebreaker suggestions based on the name and company of the person you specify. Please enter the person's name and company in the appropriate fields to receive the suggestions. **Remember!** If you do not fill in both fields, we will not be able to make suggestions for you.
             """
             )
+
+    def configure_body(self, summary_and_facts, topics_of_interest, ice_breakers):
+        summary_data = summary_and_facts["text"]
+        summary = summary_data.summary
+        facts = summary_data.facts
+        twitter_alert = summary_data.twitter_alert
+        final_message = summary_data.final_message
+
+        topics_data = topics_of_interest["text"]
+        topics = topics_data.topics_of_interest
+
+        ice_breakers_data = ice_breakers["text"]
+        ice_breaker_list = ice_breakers_data.ice_breakers
+
+        st.title("Summary and Highlights")
+
+        st.header("Summary")
+        st.markdown(summary)
+
+        st.header("Interesting Facts")
+        for fact in facts:
+            st.markdown(f"✅ {fact}")
+
+        st.header("Ice Breakers")
+        for breaker in ice_breaker_list:
+            st.markdown(f"💬 {breaker}")
+
+        st.header("Topics of Interest")
+        for topic in topics:
+            st.markdown(f"🔍 {topic}")
+
+        st.subheader("Twitter Alert")
+        st.markdown(f"🚨 {twitter_alert}")
+
+        st.markdown("**Note:**")
+        st.markdown(f"📢 {final_message}")
     
     def display_input_form(self):
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         with col1:
             name = st.text_input('Enter the person\'s name', placeholder='e.g., Bill Gates')
         with col2:
             company = st.text_input('Enter the company where the person works', placeholder='e.g., Microsoft')
-        return name, company
+        with col3:
+            position = st.text_input('Enter the current position', placeholder='e.g., CEO')
+        return name, company, position
 
 
     def run(self):
         self.configure_header()
-        name, company = self.display_input_form()
+        name, company, position = self.display_input_form()
 
         st.write("")  # Add some space
 
@@ -65,15 +104,16 @@ class IceBreakerApp:
                 progress_bar = st.progress(0)
                 
                 progress_bar.progress(3)
-                summary_and_facts, topic_of_interest, ice_breakers = st.session_state.ice_breaker.generate_ice_breakers(name, company, progress_bar)
-                
+                summary_and_facts, topic_of_interest, ice_breakers = st.session_state.ice_breaker.generate_ice_breakers(name, company, position, progress_bar)
+
                 progress_bar.progress(100)
-                st.write("summary_and_facts")
-                st.json(summary_and_facts)
-                st.write("topic_of_interest")
-                st.json(topic_of_interest)
-                st.write("ice_breakers")
-                st.json(ice_breakers)
+                self.configure_body(summary_and_facts, topic_of_interest, ice_breakers)
+                # st.write("summary_and_facts")
+                # st.json(summary_and_facts)
+                # st.write("topic_of_interest")
+                # st.json(topic_of_interest)
+                # st.write("ice_breakers")
+                # st.json(ice_breakers)
             else:
                 st.warning("Please fill in both fields to receive suggestions.")
 
