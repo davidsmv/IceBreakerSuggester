@@ -26,9 +26,9 @@ class IceBreaker:
         self.twitter_agent = TwitterLookAgent(llm=self.llm)
         self.chain_factory = ChainFactory(self.llm)
 
-    def get_social_media_data(self, name: str, company: str, progress_bar):
+    def get_social_media_data(self, name: str, company: str, position: str, progress_bar):
         """Fetches LinkedIn and Twitter data for a given person."""
-        linkedin_profile_url = self.linkedin_agent.lookup(name, company)
+        linkedin_profile_url = self.linkedin_agent.lookup(name, company, position)
         progress_bar.progress(5)
         linkedin_data = self.linkedin_scraper.linkedin_profile(linkedin_profile_url)
         progress_bar.progress(10)
@@ -41,13 +41,13 @@ class IceBreaker:
         return linkedin_data, twitter_data
 
 
-    def generate_ice_breakers(self, name: str, company: str, progress_bar):
+    def generate_ice_breakers(self, name: str, company: str, position: str, progress_bar):
         linkedin_data, twitter_data = None, None
         max_retries = 2
         for attempt in range(1, max_retries + 1):
             try:
                 print(f"Attempt {attempt} to get social media data.")
-                linkedin_data, twitter_data = self.get_social_media_data(name, company, progress_bar)
+                linkedin_data, twitter_data = self.get_social_media_data(name, company, position, progress_bar)
                 progress_bar.progress(25)
 
                 print(f"Attempt {attempt} to generate summary and facts.")

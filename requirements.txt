@@ -7,8 +7,8 @@ pydantic-settings==2.0.3
 
 # Scraping and Automation
 googlesearch-python==1.2.3
-selenium==4.21.0
-webdriver-manager==4.0.1
+selenium==4.19.0
+webdriver-manager==4.0.2
 
 # Data handling and processing
 numpy>=1.23.5

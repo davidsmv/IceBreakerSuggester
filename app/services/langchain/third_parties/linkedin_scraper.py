@@ -38,14 +38,14 @@ class LinkedinScraper:
 
     def login(self):
         self.driver.get("https://www.linkedin.com/login") 
-        sleep(0.1) 
+        sleep(0.5) 
 
 
         self.driver.find_element(By.XPATH, '//*[@id="username"]').send_keys(self.linkedin_username) 
         self.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys(self.linkedin_password) 
         sleep(2) 
         self.driver.find_element(By.XPATH, '//*[@id="organic-div"]/form/div[3]/button').click()
-        sleep(1)
+        sleep(1) 
 
     def is_driver_active(self):
         try:

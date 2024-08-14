@@ -9,12 +9,12 @@ summary_template ="""
 
 topics_template = """
     given the information about a person from linkedin {linkedin_data}, and twitter posts {twitter_data} I want you to create:
-    3 topics that might interest them
+    3 topics that might interest them but take into account the Linkedin information more than the twitter information as the twitter information may not be as accurate.
     \n{format_instructions}
 """
 
 ice_breakers_template = """
     given the information about a person from linkedin {linkedin_data}, and twitter posts {twitter_data} I want you to create:
-    2 creative Ice breakers with them that are derived from their activity on Linkedin and twitter, preferably on latest tweets
+    2 creative Ice breakers with them that are derived from their activity on Linkedin and twitter, but take into account the Linkedin information more than the twitter information as the twitter information may not be as accurate.
     \n{format_instructions}
 """
