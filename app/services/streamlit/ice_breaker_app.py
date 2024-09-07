@@ -1,9 +1,6 @@
 import streamlit as st
 from services.langchain.ice_breaker import IceBreaker
-import json
-from streamlit_lottie import st_lottie
-import time
-import re
+
 
 class IceBreakerApp:
     def __init__(self):
@@ -28,8 +25,7 @@ class IceBreakerApp:
             }
             </style>
             <div class="title">IceBreaker Suggester</div>
-            """,
-            unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
 
         st.markdown("""
             ### About This App
@@ -39,11 +35,9 @@ class IceBreakerApp:
             #### Project Inspiration
             The concept for this project originated from the Udemy course [_"LangChain - Develop LLM Powered Applications with LangChain"_](https://www.udemy.com/course/langchain/?couponCode=LETSLEARNNOWPP) by Eden Marco. While the foundational idea is derived from this course, I've made several significant modifications to tailor it to my vision.
             Feel free to explore the original project on GitHub for comparison and further understanding: [Original Project by Eden Marco](https://github.com/emarco177/ice_breaker).
-                    
             ### Instructions
             The purpose of this project is to provide icebreaker suggestions based on the name and company of the person you specify. Please enter the person's name and company in the appropriate fields to receive the suggestions. **Remember!** If you do not fill in both fields, we will not be able to make suggestions for you.
-            """
-            )
+            """)
 
     def configure_body(self, summary_and_facts, topics_of_interest, ice_breakers):
         summary_data = summary_and_facts["text"]
@@ -80,7 +74,7 @@ class IceBreakerApp:
 
         st.markdown("**Note:**")
         st.markdown(f"📢 {final_message}")
-    
+
     def display_input_form(self):
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -90,7 +84,6 @@ class IceBreakerApp:
         with col3:
             position = st.text_input('Enter the current position', placeholder='e.g., CEO')
         return name, company, position
-
 
     def run(self):
         self.configure_header()
@@ -102,35 +95,11 @@ class IceBreakerApp:
         if button_clicked:
             if name and company:
                 progress_bar = st.progress(0)
-                
+
                 progress_bar.progress(3)
                 summary_and_facts, topic_of_interest, ice_breakers = st.session_state.ice_breaker.generate_ice_breakers(name, company, position, progress_bar)
 
                 progress_bar.progress(100)
                 self.configure_body(summary_and_facts, topic_of_interest, ice_breakers)
-                # st.write("summary_and_facts")
-                # st.json(summary_and_facts)
-                # st.write("topic_of_interest")
-                # st.json(topic_of_interest)
-                # st.write("ice_breakers")
-                # st.json(ice_breakers)
             else:
                 st.warning("Please fill in both fields to receive suggestions.")
-
-        # name = st.text_input('Enter your name')
-        # company = st.text_input('Enter the company where you work')
-        # if st.button('Search Info'):
-        #     summary_and_facts, topic_of_interest, ice_breakers = self.ice_breaker.generate_ice_breakers(name, company)
-
-        #     st.write("summary_and_facts")
-        #     st.json(summary_and_facts)
-        #     st.write("topic_of_interest")
-        #     st.json(topic_of_interest)
-        #     st.write("ice_breakers")
-        #     st.json(ice_breakers)
-
-
-        # with re sponses Strcuture design of the web
-        # Test and feedback
-
-        # https://github.com/emarco177/ice_breaker/blob/main/chains/custom_chains.py

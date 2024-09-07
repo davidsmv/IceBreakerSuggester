@@ -1,21 +1,14 @@
-from configurations.settings import settings
-import tweepy
-from selenium import webdriver 
-from googlesearch import search
-from selenium.webdriver.chrome.service import Service 
-from selenium.webdriver.common.by import By 
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 import time
-from webdriver_manager.core.os_manager import ChromeType
-from selenium.webdriver.chrome.options import Options
-import os
 
 
 class TwitterScraper:
     """A class to fetch tweets from Twitter using the Tweepy API."""
-    
+
     def __init__(self):
         """Initializes the TwitterScraper with credentials and sets up API access."""
         self.driver = None
@@ -58,8 +51,8 @@ class TwitterScraper:
 
         except Exception as e:
             return f"An error occurred: {e}"
-        
-        finally:
-            if self.driver is not None: self.driver.quit()
-            self.driver = None
 
+        finally:
+            if self.driver is not None:
+                self.driver.quit()
+            self.driver = None

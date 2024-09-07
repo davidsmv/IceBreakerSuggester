@@ -1,4 +1,4 @@
-summary_template ="""
+summary_template = """
     Based on the provided LinkedIn profile information {linkedin_data} and recent Twitter posts {twitter_data}, please create:
     1. A concise summary of the person's professional background and recent activities, primarily based on LinkedIn data.
     2. Four notable facts about the individual, drawing on insights from both LinkedIn and Twitter data. In one of this facts always mentioning the twitter username (If the Twitter data shows little relevance to the LinkedIn information or is limited, always explicitly mention the Twitter username.)

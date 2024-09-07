@@ -1,10 +1,4 @@
-import os
-from dotenv import load_dotenv, find_dotenv
-import streamlit as st
-
-from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
-from langchain_core.prompts import PromptTemplate
 
 from services.langchain.third_parties.linkedin_scraper import LinkedinScraper
 from services.langchain.third_parties.twitter_scrapper import TwitterScraper
@@ -14,6 +8,7 @@ from services.langchain.output.output_parsers import summary_parser, topic_of_in
 from services.langchain.templates.templates import summary_template, topics_template, ice_breakers_template
 
 from services.langchain.chains.chain_factory import ChainFactory
+
 
 class IceBreaker:
 
@@ -40,7 +35,6 @@ class IceBreaker:
 
         return linkedin_data, twitter_data
 
-
     def generate_ice_breakers(self, name: str, company: str, position: str, progress_bar):
         linkedin_data, twitter_data = None, None
         max_retries = 2
@@ -60,7 +54,7 @@ class IceBreaker:
 
                 print(f"Attempt {attempt} to generate ice breakers.")
                 ice_breakers = self.chain_factory.get_prompt_dict(ice_breakers_template, ice_breaker_parser, linkedin_data, twitter_data)
-                
+
                 print("Successfully generated all data.")
                 return summary_and_facts, topic_of_interest, ice_breakers
 

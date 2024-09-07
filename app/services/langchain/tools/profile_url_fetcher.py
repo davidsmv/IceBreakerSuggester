@@ -1,14 +1,9 @@
-from googlesearch import search
 import time
-from selenium import webdriver 
-from selenium.webdriver.chrome.service import Service 
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common.exceptions import WebDriverException
-from webdriver_manager.core.os_manager import ChromeType
-from selenium.webdriver.chrome.options import Options
-import os
 
 
 class ProfileUrlFetcher:
@@ -19,9 +14,10 @@ class ProfileUrlFetcher:
     def initialize_driver(self):
         self.driver = None
         options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
+        # options.add_argument('--headless')
         options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1920,1200')
+        options.add_argument("--use-fake-ui-for-media-stream")
         print("Installing ChromeDriver...")
         service = Service(ChromeDriverManager().install())
         print("Starting ChromeDriver...")
@@ -56,8 +52,7 @@ class ProfileUrlFetcher:
 
         except Exception as e:
             return f"An error occurred: {e}"
-        
         finally:
-            if self.driver is not None: self.driver.quit()
+            if self.driver is not None:
+                self.driver.quit()
             self.driver = None
-

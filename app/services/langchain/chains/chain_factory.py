@@ -1,5 +1,3 @@
-from langchain_core.runnables import RunnableSequence
-from langchain_openai import ChatOpenAI
 from langchain.prompts.prompt import PromptTemplate
 from langchain.chains import LLMChain
 
