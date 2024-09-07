@@ -1,10 +1,4 @@
-import os
-from dotenv import load_dotenv, find_dotenv
-import streamlit as st
-
-from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
-from langchain_core.prompts import PromptTemplate
 
 from services.langchain.third_parties.linkedin_scraper import LinkedinScraper
 from services.langchain.third_parties.twitter_scrapper import TwitterScraper
@@ -14,6 +8,7 @@ from services.langchain.output.output_parsers import summary_parser, topic_of_in
 from services.langchain.templates.templates import summary_template, topics_template, ice_breakers_template
 
 from services.langchain.chains.chain_factory import ChainFactory
+
 
 class IceBreaker:
 
@@ -26,9 +21,9 @@ class IceBreaker:
         self.twitter_agent = TwitterLookAgent(llm=self.llm)
         self.chain_factory = ChainFactory(self.llm)
 
-    def get_social_media_data(self, name: str, company: str, progress_bar):
+    def get_social_media_data(self, name: str, company: str, position: str, progress_bar):
         """Fetches LinkedIn and Twitter data for a given person."""
-        linkedin_profile_url = self.linkedin_agent.lookup(name, company)
+        linkedin_profile_url = self.linkedin_agent.lookup(name, company, position)
         progress_bar.progress(5)
         linkedin_data = self.linkedin_scraper.linkedin_profile(linkedin_profile_url)
         progress_bar.progress(10)
@@ -40,16 +35,35 @@ class IceBreaker:
 
         return linkedin_data, twitter_data
 
+    def generate_ice_breakers(self, name: str, company: str, position: str, progress_bar):
+        linkedin_data, twitter_data = None, None
+        max_retries = 2
+        for attempt in range(1, max_retries + 1):
+            try:
+                print(f"Attempt {attempt} to get social media data.")
+                linkedin_data, twitter_data = self.get_social_media_data(name, company, position, progress_bar)
+                progress_bar.progress(25)
 
-    def generate_ice_breakers(self, name: str, company: str, progress_bar):
-        """Generates ice breakers, topics of interest, and summaries for a given person."""
-        linkedin_data, twitter_data = self.get_social_media_data(name, company, progress_bar)
-        progress_bar.progress(25)
+                print(f"Attempt {attempt} to generate summary and facts.")
+                summary_and_facts = self.chain_factory.get_prompt_dict(summary_template, summary_parser, linkedin_data, twitter_data)
+                progress_bar.progress(50)
 
-        summary_and_facts = self.chain_factory.get_prompt_dict(summary_template, summary_parser, linkedin_data, twitter_data)
-        progress_bar.progress(50)
-        topic_of_interest = self.chain_factory.get_prompt_dict(topics_template, topic_of_interest_parser, linkedin_data, twitter_data)
-        progress_bar.progress(75)
-        ice_breakers = self.chain_factory.get_prompt_dict(ice_breakers_template, ice_breaker_parser, linkedin_data, twitter_data)
+                print(f"Attempt {attempt} to generate topics of interest.")
+                topic_of_interest = self.chain_factory.get_prompt_dict(topics_template, topic_of_interest_parser, linkedin_data, twitter_data)
+                progress_bar.progress(75)
 
-        return summary_and_facts, topic_of_interest, ice_breakers
+                print(f"Attempt {attempt} to generate ice breakers.")
+                ice_breakers = self.chain_factory.get_prompt_dict(ice_breakers_template, ice_breaker_parser, linkedin_data, twitter_data)
+
+                print("Successfully generated all data.")
+                return summary_and_facts, topic_of_interest, ice_breakers
+
+            except Exception as e:
+                print(f"Error on attempt {attempt}: {e}")
+                if attempt < max_retries:
+                    print("Retrying...")
+                else:
+                    print("Max retries reached. Raising exception.")
+                    raise e
+
+        return None, None, None
